@@ -3,7 +3,6 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"@repo/data-ops": "workspace:*",
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev --x-remote-bindings",
 		"start": "wrangler dev",
