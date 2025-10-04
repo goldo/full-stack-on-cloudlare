@@ -3,7 +3,11 @@ import { appRouter } from "@/worker/trpc/router";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Hono } from "hono";
 
-export const App = new Hono<{ Bindings: ServiceBindings }>();
+export type AppContext = {
+  Bindings: Env;
+};
+
+export const App = new Hono<AppContext>();
 
 App.all("/trpc/*", (c) => {
   return fetchRequestHandler({
