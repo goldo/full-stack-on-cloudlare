@@ -8,9 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 export const formatRelativeTime = (timestamp: string) => {
   const now = new Date();
   const clickedTime = new Date(timestamp);
-  console.log(clickedTime);
+
   const diffInSeconds = Math.floor(
-    (now.getTime() - clickedTime.getTime()) / 1000,
+    (now.getTime() - clickedTime.getTime()) / 1000
   );
 
   if (diffInSeconds < 60) {
@@ -50,21 +50,20 @@ const roundToMile = (coord: number) => {
 
 // Group clicks by rounded coordinates and count them
 export const groupClicksByMile = (clicks: GeoClick[]): GroupedGeoClick[] => {
-  const clickGroups = clicks.reduce(
-    (acc, click) => {
-      const key = `${roundToMile(click.latitude)}_${roundToMile(click.longitude)}`;
-      if (!acc[key]) {
-        acc[key] = {
-          latitude: roundToMile(click.latitude),
-          longitude: roundToMile(click.longitude),
-          count: 0,
-        };
-      }
-      acc[key].count++;
-      return acc;
-    },
-    {} as Record<string, GroupedGeoClick>,
-  );
+  const clickGroups = clicks.reduce((acc, click) => {
+    const key = `${roundToMile(click.latitude)}_${roundToMile(
+      click.longitude
+    )}`;
+    if (!acc[key]) {
+      acc[key] = {
+        latitude: roundToMile(click.latitude),
+        longitude: roundToMile(click.longitude),
+        count: 0,
+      };
+    }
+    acc[key].count++;
+    return acc;
+  }, {} as Record<string, GroupedGeoClick>);
 
   return Object.values(clickGroups);
 };

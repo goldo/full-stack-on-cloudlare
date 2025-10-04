@@ -9,16 +9,27 @@
   "compatibility_date": "2025-06-17",
   "assets": {
     "binding": "ASSETS",
-    "not_found_handling": "single-page-application",
+    "not_found_handling": "single-page-application"
   },
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_id": "5fcfdc8c-ecd4-48ed-880b-f740b2618e6f",
-      "remote": true
+  "env": {
+    "stage": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_id": "5fcfdc8c-ecd4-48ed-880b-f740b2618e6f",
+          "remote": true
+        }
+      ],
+      "services": [
+        {
+          "binding": "BACKEND_SERVICE",
+          "service": "data-service-stage",
+          "remote": true
+        }
+      ]
     }
-  ]
+  }
 }
