@@ -1,6 +1,11 @@
-import { betterAuth } from "better-auth";
-import Database from "better-sqlite3";
+import { createBetterAuth } from "@/auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
-export const auth = betterAuth({
-  database: new Database("./sqlite.db"),
-});
+export const auth: ReturnType<typeof createBetterAuth> = createBetterAuth(
+  drizzleAdapter(
+    {},
+    {
+      provider: "sqlite",
+    }
+  )
+);

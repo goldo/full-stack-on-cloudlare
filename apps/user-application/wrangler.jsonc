@@ -9,7 +9,8 @@
   "compatibility_date": "2025-06-17",
   "assets": {
     "binding": "ASSETS",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/auth/*", "/trpc/*", "/click-socket"]
   },
   "observability": {
     "enabled": true
@@ -19,6 +20,7 @@
       "d1_databases": [
         {
           "binding": "DB",
+          "database_name": "user-application-stage",
           "database_id": "5fcfdc8c-ecd4-48ed-880b-f740b2618e6f",
           "remote": true
         }
@@ -35,6 +37,7 @@
       "d1_databases": [
         {
           "binding": "DB",
+          "database_name": "user-application-production",
           "database_id": "380a3594-c22f-49ae-94ac-3eb2fa93c402"
         }
       ],
