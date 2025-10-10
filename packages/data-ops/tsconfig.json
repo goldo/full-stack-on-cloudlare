@@ -17,5 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "disableSizeLimit": true,
+  "include": ["src", "auth-gen"]
 }
