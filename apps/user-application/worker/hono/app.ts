@@ -5,31 +5,47 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Hono } from "hono";
 import { createMiddleware } from "hono/factory";
 
-export type AppContext = {
-  Bindings: Env;
-  Variables: {
-    userId: string;
-  };
-};
-
-export const App = new Hono<AppContext>();
+export const App = new Hono<{
+  Bindings: ServiceBindings;
+  Variables: { userId: string };
+}>();
 
 const getAuthInstance = (env: Env) => {
-  return getAuth({
-    clientId: env.GOOGLE_CLIENT_ID,
-    clientSecret: env.GOOGLE_CLIENT_SECRET,
-  });
+  return getAuth(
+    {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
+    {
+      stripeWebhookSecret: env.STRIPE_WEBHOOK_KEY,
+      stripeApiKey: env.STRIPE_SECRET_KEY,
+      plans: [
+        {
+          name: "basic",
+          priceId: env.STRIPE_PRODUCT_BASIC,
+        },
+        {
+          name: "pro",
+          priceId: env.STRIPE_PRODUCT_PRO,
+        },
+        {
+          name: "enterprise",
+          priceId: env.STRIPE_PRODUCT_ENTERPRISE,
+        },
+      ],
+    },
+    env.APP_SECRET
+  );
 };
 
 const authMiddleware = createMiddleware(async (c, next) => {
   const auth = getAuthInstance(c.env);
-  const session = await auth.api.getSession({
-    headers: c.req.raw.headers,
-  });
-
-  if (!session?.user) return c.json({ error: "Unauthorized" }, 401);
-
-  c.set("userId", session.user.id);
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+  if (!session?.user) {
+    return c.text("Unauthorized", 401);
+  }
+  const userId = session.user.id;
+  c.set("userId", userId);
   await next();
 });
 
